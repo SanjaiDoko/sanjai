@@ -1,0 +1,28 @@
+name: deployment
+on:
+  push:
+    branches:
+      main
+permissions:
+  contents: read
+  id-token: write
+  pages: write
+jobs:
+  deployment-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.5.2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.2
+        with:
+          node-version: 18
+          cache: npm
+      - name: npm install
+        run: npm i
+      - name: build package
+        run: npm run build
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1.0.8
+      - name: Deploy GitHub Pages site
+        uses: actions/deploy-pages@v2.0.1
